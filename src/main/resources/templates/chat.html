@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>ChatBot</title>
+</head>
+<body>
+<h2>Chat with our Bot</h2>
+<div id="chatWindow"></div>
+<input type="text" id="messageInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)" />
+<button onclick="sendMessage()">Send</button>
+
+<script>
+    function sendMessage() {
+        const messageInput = document.getElementById('messageInput');
+        const chatWindow = document.getElementById('chatWindow');
+
+        const message = { content: messageInput.value };
+        fetch('/chat/send', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(message),
+        })
+            .then(response => response.json())
+            .then(data => {
+                chatWindow.innerHTML += `<div>You: ${message.content}</div>`;
+                chatWindow.innerHTML += `<div>Bot: ${data.content}</div>`;
+            });
+
+        messageInput.value = '';
+    }
+
+    function handleKeyPress(event) {
+        if (event.keyCode === 13) {
+            sendMessage();
+            event.preventDefault();
+        }
+    }
+</script>
+</body>
+</html>
