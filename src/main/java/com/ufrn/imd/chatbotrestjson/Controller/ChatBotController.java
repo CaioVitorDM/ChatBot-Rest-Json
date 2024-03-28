@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.io.File;
 
+/**
+ * This is a Rest Controller for handling chat operations with a bot.
+ * It uses the AliceBot framework for chat operations.
+ */
 @RestController
 @RequestMapping("/chat")
 public class ChatBotController {
@@ -18,10 +22,17 @@ public class ChatBotController {
     private Bot bot;
     private Chat chatSession;
 
-    public ChatBotController(){
+    public ChatBotController() {
         initializeBot();
     }
 
+    /**
+     * This method is a POST endpoint for sending a message to the bot.
+     * It takes a Message object as input and returns a Message object as the bot's reply.
+     *
+     * @param message The message sent to the bot.
+     * @return The bot's reply as a Message object.
+     */
     @PostMapping("/send")
     public Message sendMessage(@RequestBody Message message) {
         Message reply = new Message();
@@ -29,6 +40,10 @@ public class ChatBotController {
         return reply;
     }
 
+    /**
+     * This method initializes the bot and the chat session.
+     * It sets the trace mode to false.
+     */
     private void initializeBot() {
         String resourcesPath = getResourcesPath();
         bot = new org.alicebot.ab.Bot("super", resourcesPath);
@@ -36,6 +51,11 @@ public class ChatBotController {
         MagicBooleans.trace_mode = false;
     }
 
+    /**
+     * This method returns the path to the resources directory.
+     *
+     * @return The path to the resources directory.
+     */
     private static String getResourcesPath() {
         File currDir = new File(".");
         String path = currDir.getAbsolutePath();
